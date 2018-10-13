@@ -1,0 +1,16 @@
+{
+  "name": "node-simple",
+  "author": "Soriano <email@email.com>",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
