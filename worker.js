@@ -12,7 +12,8 @@ amqp.connect('amqp://localhost:5672', (err, conn)  => {
 
         ch.consume(fila, msg => {
             console.log(" [x] Recebido %s", msg.content.toString())
-        }, { noAck: true })
+            ch.ack(msg)
+        }, { noAck: false })
     })
 
 })
