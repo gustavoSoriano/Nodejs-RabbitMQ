@@ -1,18 +1,23 @@
-const amqp = require('amqplib/callback_api')
+const amqp   = require('amqplib')
+let fila     = 'hello'
 
-amqp.connect('amqp://localhost:5672', (err, conn)  => {
+const Worker = async () => {
+    let conn = await amqp.connect('amqp://localhost:5672')
+    let ch   = await conn.createChannel()
 
-    conn.createChannel(  (err, ch) => {
-        let fila = 'hello'
+    ch.assertQueue(fila, { durable: false })
+    ch.prefetch(1)
 
-        ch.assertQueue(fila, { durable: false })
-        ch.prefetch(1)
+    console.log(" [➢] Aguardando por mensagens na fila: %s.", fila)
 
-        console.log(" [*] Aguardando por mensagens na fila: %s.", fila)
+    ch.consume(fila, async msg => {
+        await ch.assertQueue(fila, { durable: false })
 
-        ch.consume(fila, msg => {
-            console.log(" [x] Recebido %s", msg.content.toString())
-        }, { noAck: true })
-    })
+        console.log(" [✓] Recebido %s", msg.content.toString())
 
-})
+        ch.ack(msg)
+    }, { noAck: false })
+    process.once('SIGINT', () => conn.close() )
+}
+Worker()
+

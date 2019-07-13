@@ -35,14 +35,13 @@ Abra o browser em http://localhost:8080
 npm install
 ```
 
-### 5. Agora é necessário inicar um worker, que ficará aguardando um job entrar na fila
-Mantenha o console aberto para compreender melhor o funcionamento
+## Envio e recebimento simples de mensagem
+Inicie o consumidor da fila
 ```
 node worker.js
 ```
 
-### 6. Agora inicie o APP
-Abrindo um novo terminal, execute o app.js.
+Inicie o envio:
 ```
 node app.js
 ```
@@ -50,10 +49,31 @@ node app.js
 Sempre que rodar o app, este enviará um mensagem à fila, o Rabbit enviará
 a mensagem ao worker que estiver disponível.
 
-Obs: É possível subir mais de um worker.
 
 
+## RPC - Chamada de Procedimento Remoto. Para envio e resposta imediata mesmo que em servidores remoto:
+Inicie o canal no server que irá receber a solicitação
+```
+node RPC/rpc_server.js
+```
+
+Inicie o cliente que fará a solicitação e aguardará por resposta imediata:
+Informe um número qualquer como argumento para teste
+```
+node RPC/rpc_client.js 1000
+```
 
 
+## EXCHANGE - Permite definir seletivamente o tipo de mensagem que um worker pretende receber
+Inicie o script que receberá as mensagens da exchange, porém, somente as que conferem com o critério de prioridade informado:
+```
+node EXCHANGE/receive_logs_direct.js
+```
+
+Inicie o script que publica na exchange criada.
+Informe um critério de prioridade qualquer como argumento para teste. o padrão é 'error'. No ex: info foi informado
+```
+node EXCHANGE/emit_log_direct.js info
+```
 
 
