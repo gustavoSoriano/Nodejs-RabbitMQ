@@ -8,16 +8,12 @@ const Worker = async () => {
     ch.assertQueue(fila, { durable: false })
     ch.prefetch(1)
 
-    console.log(" [➢] Aguardando por mensagens na fila: %s.", fila)
+    console.log(" [*] Aguardando por mensagens na fila: %s.", fila)
 
-    ch.consume(fila, async msg => {
-        await ch.assertQueue(fila, { durable: false })
-
-        console.log(" [✓] Recebido %s", msg.content.toString())
-
+    ch.consume(fila, msg => {
+        console.log(" [x] Recebido %s", msg.content.toString())
         ch.ack(msg)
     }, { noAck: false })
     process.once('SIGINT', () => conn.close() )
 }
 Worker()
-

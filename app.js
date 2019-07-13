@@ -5,13 +5,10 @@ const Producer = async () => {
     let conn   = await amqp.connect('amqp://localhost:5672')
     let ch     = await conn.createChannel()
     
-    await ch.assertQueue('hello', { durable: false })
-
-    for(let i=0; i < 10000; i++)
-        ch.sendToQueue('hello', new Buffer.from(msg))
+    ch.assertQueue('hello', { durable: false })  
+    ch.sendToQueue('hello', new Buffer.from(msg))
     
-    console.log(" [➢] Sent %s", msg)
-    setTimeout( () => { conn.close(); process.exit(0) }, 1000)
+    console.log(" [x] Sent %s", msg)
+    setTimeout( () => { conn.close(); process.exit(0) }, 500)
 }
 Producer()
-
