@@ -77,3 +77,16 @@ node EXCHANGE/emit_log_direct.js info
 ```
 
 
+## TTL MESSAGE - Permite definir quando uma mensagem vai expirar na fila, e quando isso ocorrer podera ser redirecionada a outra fila
+Inicie o worker da fila receptora da mensagem expirada:
+```
+node EXPIRE_TTL/receive.js
+```
+
+Inicie o script que enviar a mensagem para fila e define o ttl.
+
+```
+node EXPIRE_TTL/emit.js
+```
+
+
